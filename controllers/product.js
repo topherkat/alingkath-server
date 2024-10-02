@@ -81,7 +81,8 @@ module.exports.updateProduct = (req, res) => {
     description: req.body.description,
     price: req.body.price,
     isActive: req.body.isActive,
-    category: req.body.category
+    category: req.body.category,
+    imageUrl: req.body.imageUrl
   };
 
   Product.findByIdAndUpdate(productId, updatedProductInfo, { new: true })
