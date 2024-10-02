@@ -7,7 +7,8 @@ module.exports.createProduct = (req, res) => {
     name: req.body.name,
     description: req.body.description,
     price: req.body.price,
-     category: req.body.category
+    category: req.body.category,
+    imageUrl: req.body.imageUrl
   });
 
   Product.findOne({ name: req.body.name })

@@ -21,6 +21,10 @@ const productSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true
+    },
+    imageUrl: {
+        type: String,
+        required: false  // Make this required if you want all products to have an image
     }
 });
 
