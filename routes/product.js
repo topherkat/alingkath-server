@@ -42,4 +42,7 @@ router.post(
   productController.searchProductByPriceRange
 );
 
+
+router.post('/search', productController.searchProductByName);
+
 module.exports = router;
