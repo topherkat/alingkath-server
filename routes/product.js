@@ -32,17 +32,15 @@ router.patch("/activate/:productId", verify,
   productController.activateProduct
 );
 
-// Search product by name route
-router.post("/search-by-name", verify, productController.searchProductByName);
 
+router.post('/search-products', productController.searchProductByName);
 // Search product by price range route
 router.post(
   "/search-by-price",
-  verify,
   productController.searchProductByPriceRange
 );
 
 
-router.post('/search', productController.searchProductByName);
+
 
 module.exports = router;

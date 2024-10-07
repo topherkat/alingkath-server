@@ -83,3 +83,18 @@ module.exports.getProfile = (req, res) => {
     })
     .catch(error => errorHandler(error, req, res));
 };
+
+module.exports.getUserById = (req, res) => {
+  const { userId } = req.params; // Get userId from request parameters
+
+  User.findById(userId)
+    .then(user => {
+      if (!user) {
+        return res.status(404).send({ message: 'User not found' });
+      }
+      return res.status(200).send(user); // Send the found user
+    })
+    .catch(err => {
+      return res.status(500).send({ message: 'An error occurred', error: err.message });
+    });
+};

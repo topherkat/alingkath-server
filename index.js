@@ -7,9 +7,16 @@ require('dotenv').config();
 // [SECTION] Route requirements
 const userRoutes = require("./routes/user");
 const productRoutes = require("./routes/product");
+const cartRoutes = require("./routes/cart");
+const orderRoutes = require("./routes/order");
 
 // [SECTION] Server Setup
 const app = express();
+
+app.use((req, res, next) => {
+  console.log(`${req.method} request to ${req.url}`);
+  next(); // Call the next middleware or route handler
+});
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));	
@@ -26,16 +33,16 @@ mongoose.connect(process.env.MONGODB_STRING, {
 mongoose.connection.once('open', () => console.log('Now connected to MongoDB Atlas.'));
 
 
-
 // Define URI Endpoints
- app.use("/users", userRoutes);
- app.use("/products", productRoutes);
-
+app.use("/users", userRoutes);
+app.use("/products", productRoutes);
+app.use("/cart", cartRoutes);
+app.use("/orders", orderRoutes);
 
 // [SECTION] Server Gateway Response
 if(require.main === module){
     app.listen(process.env.PORT || 3000, () => {
-        console.log(`API is now online on port ${ process.env.PORT || 3000 }`)
+        console.log(`API is now online on port ${ process.env.PORT || 3000 }`);
     });
 }
 

@@ -150,23 +150,22 @@ module.exports.searchProductByName = async (req, res) => {
   try {
     // const { name } = req.query;
     const { name } = req.body;
-    if (!name) {
-      return res
-        .status(400)
-        .json({ message: "Please provide a product name to search for." });
-    }
+    
 
     // Use a case-insensitive search using a regular expression
     const products = await Product.find({ name: new RegExp(name, "i") });
 
     if (products.length > 0) {
       return res.status(200).json(products);
-    } else {
+    } 
+    else {
       return res
         .status(404)
         .json({ message: "No products found with the given name." });
     }
-  } catch (error) {
+  } 
+
+  catch (error) {
     return res
       .status(500)
       .json({ message: "An error occurred", error: error.message });
