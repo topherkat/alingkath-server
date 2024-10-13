@@ -6,7 +6,7 @@ const { errorHandler } = auth;
 // User registration controller
 exports.registerUser = async (req, res) => {
     try {
-        const { firstname, lastname, email, contactNumber, password, facebookLink } = req.body;
+        const { firstname, lastname, email, contactNumber, address, password, facebookLink } = req.body;
 
         // Check if the user already exists
         const existingUser = await User.findOne({ email });
@@ -24,6 +24,7 @@ exports.registerUser = async (req, res) => {
             lastname,
             email,
             contactNumber,
+            address,
             password: hashedPassword, // store the hashed password
             facebookLink
         });
@@ -97,4 +98,58 @@ module.exports.getUserById = (req, res) => {
     .catch(err => {
       return res.status(500).send({ message: 'An error occurred', error: err.message });
     });
+};
+
+// Edit user profile controller
+module.exports.editProfile = (req, res) => {
+
+     // Assuming the authenticated user's ID comes from token
+    const { firstname, lastname, email, contactNumber, address, facebookLink } = req.body;
+
+    // Find user by ID and update their profile
+    User.findById(req.user.id)
+        .then(user => {
+            if (!user) {
+                return res.status(404).send({ message: 'User not found' });
+            }
+
+            // Update fields if provided
+            user.firstname = firstname || user.firstname;
+            user.lastname = lastname || user.lastname;
+            user.email = email || user.email;  // Make sure to handle unique constraint elsewhere
+            user.contactNumber = contactNumber || user.contactNumber;
+            user.address = address || user.address;
+            user.facebookLink = facebookLink || user.facebookLink;
+
+            // Save updated user to the database
+            return user.save();
+        })
+        .then(updatedUser => {
+            updatedUser.password = "";  // Exclude password from response
+            res.status(200).send(updatedUser);
+        })
+        .catch(error => {
+            return res.status(500).send({
+                message: 'An error occurred while updating the profile',
+                error: error.message,
+            });
+        });
+
+
+};
+
+module.exports.getAllUsers = (req, res) => {
+    User.find({})
+        .then(users => {
+            if (!users || users.length === 0) {
+                return res.status(404).send({ message: 'No users found' });
+            }
+            return res.status(200).send(users);
+        })
+        .catch(error => {
+            return res.status(500).send({
+                message: 'An error occurred while fetching users',
+                error: error.message
+            });
+        });
 };

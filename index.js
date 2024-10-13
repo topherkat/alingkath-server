@@ -9,6 +9,8 @@ const userRoutes = require("./routes/user");
 const productRoutes = require("./routes/product");
 const cartRoutes = require("./routes/cart");
 const orderRoutes = require("./routes/order");
+const noteRoutes = require('./routes/note');
+const feedbackRoutes = require('./routes/feedback');
 
 // [SECTION] Server Setup
 const app = express();
@@ -38,6 +40,8 @@ app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/orders", orderRoutes);
+app.use("/feedback", feedbackRoutes);
+app.use("/notes", noteRoutes);
 
 // [SECTION] Server Gateway Response
 if(require.main === module){

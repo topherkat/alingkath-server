@@ -6,6 +6,26 @@ const orderSchema = new Schema({
     type: String,
     required: true,
   },
+  userName: {
+    type: String,
+    required: false,
+  },
+  userEmail: {
+    type: String,
+    required: true,
+  },
+  userContactNumber: {
+    type: String,
+    required: false,
+  },
+  userAddress: {
+    type: String,
+    required: false,
+  },
+  orderType:{
+    type: String,
+    required: true,                                                               
+  },
   productsOrdered: [
     {
       productId: {

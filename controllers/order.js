@@ -5,8 +5,8 @@ const { errorHandler } = auth;
 
 module.exports.checkout = async (req, res) => {
   try {
-    // Get the user ID from the authenticated user (via JWT, session, etc.)
-    const userId = req.user.id;
+    // Get the user data from the authenticated user (via JWT, session, etc.)
+    const user = req.user; // This should contain the full user info from the token
 
     // Destructure products from the request body
     const { productsOrdered } = req.body;
@@ -35,9 +35,14 @@ module.exports.checkout = async (req, res) => {
       totalPrice += subtotal;
     }
 
-    // Create a new order with the products and the computed totalPrice
+    // Create a new order with the products, totalPrice, and user info
     const newOrder = new Order({
-      userId,
+      userId: user.id, // Use user ID from token
+      userName: user.name, // Include name from token
+      userEmail: user.email, // Include email from token
+      userContactNumber: user.contactNumber, // Include contact number from token
+      userAddress: user.address, // Include address from token
+      orderType: req.body.orderType,
       productsOrdered,
       totalPrice, // Now it's computed automatically
     });
@@ -64,6 +69,7 @@ module.exports.checkout = async (req, res) => {
     return res.status(500).json({ message: "An error occurred during checkout", error: error.message });
   }
 };
+
 
 module.exports.getOrders = async (req, res) => {
   try {

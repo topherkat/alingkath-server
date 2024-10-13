@@ -8,13 +8,15 @@ require('dotenv').config();
 //[Section] Token Creation
 module.exports.createAccessToken = (user) => {
     const data = {
-        id : user._id,
-        email : user.email,
-        isAdmin : user.isAdmin
+        id: user._id,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        contactNumber: user.contactNumber, // Add contact number
+        address: user.address, // Add address
+        name: `${user.firstname} ${user.lastname}` // Concatenate first name and last name
     };
 
     return jwt.sign(data, process.env.JWT_SECRET_KEY, {});
-    
 };
 
 //[SECTION] Token Verification
@@ -56,6 +58,9 @@ module.exports.verify = (req, res, next) => {
 module.exports.verifyAdmin = (req, res, next) => {
     // console.log("result from verifyAdmin method");
     // console.log(req.user);
+
+    console.log("user ", req.user);
+
     if(req.user.isAdmin){
         next();
     } else {
@@ -65,7 +70,6 @@ module.exports.verifyAdmin = (req, res, next) => {
         })
     }
 }
-
 
 // [SECTION] Error Handler
 module.exports.errorHandler = (err, req, res, next) => {
@@ -85,7 +89,6 @@ module.exports.errorHandler = (err, req, res, next) => {
         }
     });
 };
-
 
 //[SECTION] Middleware to check if the user is authenticated
 module.exports.isLoggedIn = (req, res, next) => {
