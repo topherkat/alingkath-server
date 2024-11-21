@@ -211,3 +211,23 @@ module.exports.searchProductByPriceRange = async (req, res) => {
       .json({ message: "An error occurred", error: error.message });
   }
 };
+
+module.exports.deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.params; // Extract the product ID from the route parameters
+
+        // Check if the product exists
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        // Delete the product
+        await Product.findByIdAndDelete(id);
+        res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while deleting the product' });
+    }
+};
+

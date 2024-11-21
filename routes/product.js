@@ -20,27 +20,15 @@ router.get("/:productId",verify, productController.getProduct);
 router.patch("/update/:productId", verify, verifyAdmin, productController.updateProduct);
 
 // Archive the product
-router.patch("/archive/:productId",
-  verify,
-  verifyAdmin,
-  productController.archiveProduct
-);
+router.patch("/archive/:productId", verify, verifyAdmin, productController.archiveProduct );
 
 // Activate the product
-router.patch("/activate/:productId", verify,
-  verifyAdmin,
-  productController.activateProduct
-);
-
+router.patch("/activate/:productId", verify, verifyAdmin, productController.activateProduct );
 
 router.post('/search-products', productController.searchProductByName);
 // Search product by price range route
-router.post(
-  "/search-by-price",
-  productController.searchProductByPriceRange
-);
+router.post("/search-by-price", productController.searchProductByPriceRange );
 
-
-
+router.delete('/:id', verify, verifyAdmin, productController.deleteProduct);
 
 module.exports = router;
